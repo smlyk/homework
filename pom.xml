@@ -8,6 +8,7 @@
         <module>patternsingleton</module>
         <module>patternprototype</module>
         <module>patternproxy</module>
+        <module>patterndelegatestrategy</module>
     </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
