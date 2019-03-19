@@ -9,6 +9,7 @@
         <module>patternprototype</module>
         <module>patternproxy</module>
         <module>patterndelegatestrategy</module>
+        <module>patterntemplateadapter</module>
     </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
