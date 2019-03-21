@@ -10,6 +10,7 @@
         <module>patternproxy</module>
         <module>patterndelegatestrategy</module>
         <module>patterntemplateadapter</module>
+        <module>patterndecoratorobserver</module>
     </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
