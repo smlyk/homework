@@ -11,6 +11,7 @@
         <module>patterndelegatestrategy</module>
         <module>patterntemplateadapter</module>
         <module>patterndecoratorobserver</module>
+        <module>patternspring</module>
     </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
