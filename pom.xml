@@ -12,6 +12,7 @@
         <module>patterntemplateadapter</module>
         <module>patterndecoratorobserver</module>
         <module>patternspring</module>
+        <module>myspringmvc</module>
     </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
