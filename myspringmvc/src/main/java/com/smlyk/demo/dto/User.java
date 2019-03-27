@@ -18,4 +18,13 @@ public class User implements Serializable{
         this.age = age;
         this.addr = addr;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", addr='" + addr + '\'' +
+                '}';
+    }
 }

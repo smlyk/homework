@@ -11,21 +11,28 @@ import com.smlyk.mvcframework.annotation.YKRestController;
  * @author yekai
  */
 @YKRestController
-@YKRequestMapping("demo")
+@YKRequestMapping("hello")
 public class HelloController {
 
     @YKAutowired
     private IHelloService helloService;
 
-    @YKRequestMapping("hello")
+    @YKRequestMapping("say")
     public String hello(@YKRequestParam("name") String name){
 
         return helloService.hello(name);
     }
 
     @YKRequestMapping("user")
-    public User user(@YKRequestParam("name") String name, @YKRequestParam("age") Integer age,@YKRequestParam("addr") String addr){
+    public User user(@YKRequestParam("name") String name, @YKRequestParam Integer age,@YKRequestParam("addr") String addr){
 
         return new User(name, age, addr);
     }
+
+    @YKRequestMapping("get")
+    public User get(){
+
+        return new User("xixi", 22, "默认");
+    }
+
 }
