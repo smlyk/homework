@@ -13,6 +13,7 @@
         <module>patterndecoratorobserver</module>
         <module>patternspring</module>
         <module>myspringmvc</module>
+        <module>threaddemo</module>
     </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
