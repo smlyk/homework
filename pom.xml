@@ -14,6 +14,7 @@
         <module>patternspring</module>
         <module>myspringmvc</module>
         <module>threaddemo</module>
+        <module>myblockingqueue</module>
     </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
