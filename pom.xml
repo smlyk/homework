@@ -15,6 +15,7 @@
         <module>myspringmvc</module>
         <module>threaddemo</module>
         <module>myblockingqueue</module>
+        <module>blockingqueuedemo</module>
     </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
