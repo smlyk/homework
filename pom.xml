@@ -17,7 +17,8 @@
         <module>myblockingqueue</module>
         <module>blockingqueuedemo</module>
 		<module>rpcdemo</module>
-	</modules>
+        <module>niodemo</module>
+    </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
