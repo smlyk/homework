@@ -20,7 +20,8 @@
         <module>niodemo</module>
 		<module>formatspringbootstarter</module>
 		<module>springbootfirst</module>
-	</modules>
+        <module>curatorzkspringbootstarter</module>
+    </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
