@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class CuratorZkAutoConfiguration {
 
     @Bean
-    public CuratorZkTemplate curatorZkTemplate(CuratorFrameworkConfigProperties properties){
+    public CuratorZkTemplate curatorZkTemplate(CuratorFrameworkConfigProperties properties) throws Exception {
         return new CuratorZkTemplate(properties);
     }
 

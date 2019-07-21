@@ -18,6 +18,8 @@ public class CuratorFrameworkConfigProperties {
 
     private Integer maxretries;
 
+    private String watchpath;
+
     public String getConnectionstr() {
         return connectionstr;
     }
@@ -40,5 +42,13 @@ public class CuratorFrameworkConfigProperties {
 
     public void setMaxretries(Integer maxretries) {
         this.maxretries = maxretries;
+    }
+
+    public String getWatchpath() {
+        return watchpath;
+    }
+
+    public void setWatchpath(String watchpath) {
+        this.watchpath = watchpath;
     }
 }
