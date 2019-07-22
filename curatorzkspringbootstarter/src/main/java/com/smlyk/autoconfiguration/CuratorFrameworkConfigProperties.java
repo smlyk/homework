@@ -20,6 +20,8 @@ public class CuratorFrameworkConfigProperties {
 
     private String watchpath;
 
+    private String namespace;
+
     public String getConnectionstr() {
         return connectionstr;
     }
@@ -50,5 +52,13 @@ public class CuratorFrameworkConfigProperties {
 
     public void setWatchpath(String watchpath) {
         this.watchpath = watchpath;
+    }
+
+    public String getNamespace() {
+        return namespace;
+    }
+
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
     }
 }

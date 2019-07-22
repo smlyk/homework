@@ -1,10 +1,13 @@
 package com.smyk;
 
+import com.google.common.base.Splitter;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.List;
 
 /**
  * rpc网络传输
@@ -12,13 +15,11 @@ import java.net.Socket;
  */
 public class RpcNetTransport {
 
-    private String host;
+    private String serviceAddress;
 
-    private int port;
 
-    public RpcNetTransport(String host, int port) {
-        this.host = host;
-        this.port = port;
+    public RpcNetTransport(String serviceAddress) {
+        this.serviceAddress = serviceAddress;
     }
 
 
@@ -32,7 +33,11 @@ public class RpcNetTransport {
 
         try {
             //建立连接
-            socket = new Socket(host, port);
+            List<String> addrList = Splitter.on(":")
+                    .omitEmptyStrings()
+                    .trimResults()
+                    .splitToList(serviceAddress);
+            socket = new Socket(addrList.get(0), Integer.parseInt(addrList.get(1)));
 
             //输出流->写
             oos = new ObjectOutputStream(socket.getOutputStream());

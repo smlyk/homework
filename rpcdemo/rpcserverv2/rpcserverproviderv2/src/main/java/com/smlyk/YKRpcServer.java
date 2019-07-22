@@ -1,13 +1,17 @@
 package com.smlyk;
 
+import com.smlyk.registry.IRegistryCenter;
+import com.smlyk.registry.RegistryCenterWithZk;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.StringUtils;
 
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.*;
@@ -32,6 +36,8 @@ public class YKRpcServer implements ApplicationContextAware, InitializingBean{
     });
 
     private Map<String, Object> handlerMap = new HashMap<>();
+
+    private IRegistryCenter registryCenter = new RegistryCenterWithZk();
 
     private int port;
 
@@ -61,6 +67,7 @@ public class YKRpcServer implements ApplicationContextAware, InitializingBean{
                     serviceName += "_" + version;
                 }
                 handlerMap.put(serviceName, serviceBean);
+                registryCenter.registry(serviceName, getAddress() + ":" + port);
             });
         }
     }
@@ -82,5 +89,16 @@ public class YKRpcServer implements ApplicationContextAware, InitializingBean{
                 serverSocket.close();
             }
         }
+    }
+
+
+    private static String getAddress(){
+        InetAddress inetAddress=null;
+        try {
+            inetAddress=InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        return inetAddress.getHostAddress();// 获得本机的ip地址
     }
 }

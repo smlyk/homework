@@ -12,6 +12,8 @@ import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;
 import org.springframework.util.StringUtils;
 
+import static java.util.Objects.isNull;
+
 /**
  * @author yekai
  */
@@ -22,7 +24,9 @@ public class CuratorZkTemplate {
     public CuratorZkTemplate(CuratorFrameworkConfigProperties properties) throws Exception {
         curatorFramework = CuratorFrameworkFactory.builder().
                 connectString(properties.getConnectionstr()).sessionTimeoutMs(properties.getTimeout()).
-                retryPolicy(new ExponentialBackoffRetry(1000,properties.getMaxretries())).build();
+                retryPolicy(new ExponentialBackoffRetry(1000,properties.getMaxretries()))
+                .namespace(properties.getNamespace())
+                .build();
         curatorFramework.start();
 
         if (!StringUtils.isEmpty(properties.getWatchpath())){
@@ -32,8 +36,18 @@ public class CuratorZkTemplate {
     }
 
     public void create(String path, String data) throws Exception {
+       create(path, data, CreateMode.PERSISTENT);
+    }
+
+    public void create(String path, String data, CreateMode mode) throws Exception {
+        if (StringUtils.isEmpty(data)){
+            curatorFramework.create()
+                    .creatingParentsIfNeeded().withMode(mode).
+                    forPath(path);
+            return;
+        }
         curatorFramework.create()
-                .creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).
+                .creatingParentsIfNeeded().withMode(mode).
                 forPath(path,data.getBytes());
     }
 
@@ -48,6 +62,13 @@ public class CuratorZkTemplate {
         curatorFramework.delete().withVersion(stat.getVersion()).forPath(path);
     }
 
+    public boolean checkExsits(String path) throws Exception {
+        Stat stat = curatorFramework.checkExists().forPath(path);
+        if (isNull(stat)){
+            return false;
+        }
+        return true;
+    }
 
     //配置中心
     //创建、修改、删除节点

@@ -1,5 +1,8 @@
 package com.smyk;
 
+import com.smyk.discovery.IServiceDiscovery;
+import org.springframework.util.StringUtils;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
@@ -8,13 +11,13 @@ import java.lang.reflect.Method;
  */
 public class RemoteInvocationHandler implements InvocationHandler{
 
-    private String host;
+    private IServiceDiscovery serviceDiscovery;
 
-    private int port;
+    private String version;
 
-    public RemoteInvocationHandler(String host, int port) {
-        this.host = host;
-        this.port = port;
+    public RemoteInvocationHandler(IServiceDiscovery serviceDiscovery, String version) {
+      this.serviceDiscovery = serviceDiscovery;
+      this.version = version;
     }
 
     @Override
@@ -31,9 +34,15 @@ public class RemoteInvocationHandler implements InvocationHandler{
         request.setClassName(method.getDeclaringClass().getName());
         request.setMethodName(method.getName());
         request.setParameters(args);
+        request.setVersion(version);
+        String serviceName = request.getClassName();
+        if(!StringUtils.isEmpty(version)){
+            serviceName=serviceName+"_"+version;
+        }
+        String serviceAddress=serviceDiscovery.discovery(serviceName);
 
         //远程通信
-        RpcNetTransport rpcNetTransport = new RpcNetTransport(host, port);
+        RpcNetTransport rpcNetTransport = new RpcNetTransport(serviceAddress);
         return rpcNetTransport.send(request);
     }
 }
