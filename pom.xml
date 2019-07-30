@@ -22,6 +22,8 @@
 		<module>springbootfirst</module>
         <module>curatorzkspringbootstarter</module>
         <module>zkdistributelock</module>
+        <module>zkconfigcenterdemo</module>
+        <module>zkleaderdemo</module>
     </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>

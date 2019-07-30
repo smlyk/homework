@@ -19,9 +19,12 @@ import static java.util.Objects.isNull;
  */
 public class CuratorZkTemplate {
 
-    private CuratorFramework curatorFramework;
+    public CuratorFramework curatorFramework;
+
+    public CuratorFrameworkConfigProperties properties;
 
     public CuratorZkTemplate(CuratorFrameworkConfigProperties properties) throws Exception {
+        this.properties = properties;
         curatorFramework = CuratorFrameworkFactory.builder().
                 connectString(properties.getConnectionstr()).sessionTimeoutMs(properties.getTimeout()).
                 retryPolicy(new ExponentialBackoffRetry(1000,properties.getMaxretries()))
@@ -29,7 +32,7 @@ public class CuratorZkTemplate {
                 .build();
         curatorFramework.start();
 
-        if (!StringUtils.isEmpty(properties.getWatchpath())){
+        if (properties.isNeedwatch()){
             addListenerWithNode(properties);
             addListenerWithChild(properties);
         }

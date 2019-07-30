@@ -22,6 +22,8 @@ public class CuratorFrameworkConfigProperties {
 
     private String namespace;
 
+    private boolean needwatch = true;
+
     public String getConnectionstr() {
         return connectionstr;
     }
@@ -60,5 +62,13 @@ public class CuratorFrameworkConfigProperties {
 
     public void setNamespace(String namespace) {
         this.namespace = namespace;
+    }
+
+    public boolean isNeedwatch() {
+        return needwatch;
+    }
+
+    public void setNeedwatch(boolean needwatch) {
+        this.needwatch = needwatch;
     }
 }
