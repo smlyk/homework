@@ -22,9 +22,9 @@
 		<module>springbootfirst</module>
         <module>curatorzkspringbootstarter</module>
         <module>zkdistributelock</module>
-        <module>zkconfigcenterdemo</module>
         <module>zkleaderdemo</module>
-    </modules>
+		<module>dubbofirstdemo</module>
+	</modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
