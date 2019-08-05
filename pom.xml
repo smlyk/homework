@@ -23,7 +23,8 @@
         <module>curatorzkspringbootstarter</module>
         <module>zkdistributelock</module>
         <module>zkleaderdemo</module>
-	</modules>
+        <module>dubbospringbootdemo</module>
+    </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
