@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -31,17 +32,23 @@ public class ProducerController {
     @Value("${fanoutexchange.yk}")
     private String fanoutexchange;
 
+    @Value("${delayexchange.yk}")
+    private String delayexchange;
+
     @Value("${directrountingkey.yk}")
     private String directrountingkey;
 
     @Value("${topicrountingkey.yk}")
     private String topicrountingkey;
 
+    @Value("${delayroutingkey.yk}")
+    private String delayrountingkey;
+
     @GetMapping("direct")
     public String direct(){
 
         CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());
-        rabbitTemplate.convertAndSend(directexchange, "aa", "aaaa", correlationData);
+        rabbitTemplate.convertAndSend(directexchange, directrountingkey, "aaaa", correlationData);
 
         return "Success";
     }
@@ -60,6 +67,26 @@ public class ProducerController {
 
         CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());
         rabbitTemplate.convertAndSend(fanoutexchange, "", "cccc", correlationData);
+
+        return "Success";
+    }
+
+    public final static Long DELAY_TIME=5000L;
+
+    @GetMapping("delay")
+    public String delay(){
+
+        CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());
+        LocalDateTime localDateTime = LocalDateTime.now();
+
+        rabbitTemplate.convertAndSend(delayexchange,
+                delayrountingkey,
+                "dddd"+" 发送时间"+localDateTime,
+                message ->  {
+                    message.getMessageProperties().setHeader("x-delay", DELAY_TIME);
+                    return message;
+                },correlationData);
+
 
         return "Success";
     }

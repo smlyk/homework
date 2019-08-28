@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -44,6 +46,9 @@ public class RabbitConfig {
     @Value("${fanoutexchange.yk}")
     private String fanoutexchange;
 
+    @Value("${delayexchange.yk}")
+    private String delayexchange;
+
     @Value("${directqueue.yk}")
     private String directqueue;
 
@@ -53,11 +58,17 @@ public class RabbitConfig {
     @Value("${fanoutqueue.yk}")
     private String fanoutqueue;
 
+    @Value("${delayqueue.yk}")
+    private String delayqueue;
+
     @Value("${directrountingkey.yk}")
     private String directrountingkey;
 
     @Value("${topicrountingkey.yk}")
     private String topicrountingkey;
+
+    @Value("${delayroutingkey.yk}")
+    private String delayroutingkey;
 
 
     //连接工厂
@@ -95,6 +106,23 @@ public class RabbitConfig {
     }
 
 
+
+   /**
+     * 通过声明一个 x-delayed-message 类型的 Exchange 来使用 delayed-messaging
+     * 特性。x-delayed-message 是插件提供的类型，并不是 rabbitmq 本身的（区别于 direct、
+     * topic、fanout、headers）
+    */
+   @Bean("delayExchange")
+   public CustomExchange exchange(){
+       Map<String, Object> args = new HashMap<>(16);
+       args.put("x-delayed-type", "direct");
+       //参数二为类型：必须是x-delayed-message
+       return new CustomExchange(delayexchange, "x-delayed-message",true, false, args);
+   }
+
+
+
+
     //创建队列  public Queue(String name){ this(name, true, false, false);}
     @Bean("directQueue")
     public Queue directQueue(){
@@ -111,10 +139,20 @@ public class RabbitConfig {
         return new Queue(fanoutqueue);
     }
 
+    @Bean("delayQueue")
+    public Queue delayQueue(){
+        return new Queue(delayqueue);
+    }
+
     //定义绑定关系
     @Bean
     public Binding bindDirect(@Qualifier("directQueue") Queue queue, @Qualifier("directExchange") DirectExchange exchange){
         return BindingBuilder.bind(queue).to(exchange).with(directrountingkey);
+    }
+
+    @Bean
+    public Binding bindDelay(@Qualifier("delayQueue") Queue queue, @Qualifier("delayExchange") CustomExchange exchange){
+        return BindingBuilder.bind(queue).to(exchange).with(delayroutingkey).noargs();
     }
 
     @Bean
@@ -128,6 +166,7 @@ public class RabbitConfig {
     }
 
 
+
     /**
      * 在消费端转换JSON消息
      * 监听类都要加上containerFactory属性
@@ -139,7 +178,7 @@ public class RabbitConfig {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
         factory.setMessageConverter(new Jackson2JsonMessageConverter());
-        factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);
+        factory.setAcknowledgeMode(AcknowledgeMode.AUTO);
         factory.setAutoStartup(true);
         factory.setDefaultRequeueRejected(false);
         factory.setConsumerTagStrategy(queue -> queue + "_" + UUID.randomUUID().toString());
@@ -168,7 +207,7 @@ public class RabbitConfig {
             if (ack) {
                 System.out.println("消息确认成功, id: ="+  id);
             } else {
-                System.out.println("消息未成功投递, id:{}, cause: " + id + cause);
+                System.out.println("消息未成功投递, id = "+id +" , cause: " + cause);
             }
         });
 
