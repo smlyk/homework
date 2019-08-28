@@ -24,6 +24,7 @@
         <module>zkdistributelock</module>
         <module>zkleaderdemo</module>
         <module>dubbospringbootdemo</module>
+        <module>springbootrabbitmqdemo</module>
     </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
