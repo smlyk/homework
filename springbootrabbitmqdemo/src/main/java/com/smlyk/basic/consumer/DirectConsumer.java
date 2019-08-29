@@ -2,14 +2,13 @@ package com.smlyk.basic.consumer;
 
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 /**
  * @author yekai
  */
-@Component
+//@Component
 public class DirectConsumer {
 
     @RabbitHandler

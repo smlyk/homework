@@ -49,6 +49,9 @@ public class RabbitConfig {
     @Value("${delayexchange.yk}")
     private String delayexchange;
 
+    @Value("${deadletterexchange.yk}")
+    private String deadletterexchange;
+
     @Value("${directqueue.yk}")
     private String directqueue;
 
@@ -60,6 +63,9 @@ public class RabbitConfig {
 
     @Value("${delayqueue.yk}")
     private String delayqueue;
+
+    @Value("${deadletterqueue.yk}")
+    private String deadletterqueue;
 
     @Value("${directrountingkey.yk}")
     private String directrountingkey;
@@ -120,13 +126,24 @@ public class RabbitConfig {
        return new CustomExchange(delayexchange, "x-delayed-message",true, false, args);
    }
 
+   //死信交换机
+    @Bean("deadletterExchange")
+    public TopicExchange deadletterExchange(){
+        return new TopicExchange(deadletterexchange, true, false);
+    }
 
 
 
     //创建队列  public Queue(String name){ this(name, true, false, false);}
     @Bean("directQueue")
     public Queue directQueue(){
-        return new Queue(directqueue);
+
+        //设置队列的死信交换机
+        Map<String, Object> map = new HashMap<>();
+        // 超时时间，10秒钟后成为死信
+        map.put("x-message-ttl",10000);
+        map.put("x-dead-letter-exchange", deadletterexchange);
+        return new Queue(directqueue, true, false, false, map);
     }
 
     @Bean("topicQueue")
@@ -139,9 +156,16 @@ public class RabbitConfig {
         return new Queue(fanoutqueue);
     }
 
+    //延迟队列
     @Bean("delayQueue")
     public Queue delayQueue(){
         return new Queue(delayqueue);
+    }
+
+    //死信队列
+    @Bean("deadletterQueue")
+    public Queue deadletterQueue(){
+        return new Queue(deadletterqueue);
     }
 
     //定义绑定关系
@@ -163,6 +187,12 @@ public class RabbitConfig {
     @Bean
     public Binding bindFanout(@Qualifier("fanoutQueue") Queue queue, @Qualifier("fanoutExchange") FanoutExchange exchange){
         return BindingBuilder.bind(queue).to(exchange);
+    }
+
+    @Bean
+    public Binding bindDeadletter(@Qualifier("deadletterQueue") Queue queue, @Qualifier("deadletterExchange") TopicExchange exchange){
+       //无条件路由
+        return BindingBuilder.bind(queue).to(exchange).with("#");
     }
 
 
