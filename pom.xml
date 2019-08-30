@@ -26,6 +26,7 @@
         <module>dubbospringbootdemo</module>
         <module>springbootrabbitmqdemo</module>
         <module>sentineldemo</module>
+        <module>sentinelspringbootdemo</module>
     </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
