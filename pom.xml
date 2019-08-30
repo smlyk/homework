@@ -25,6 +25,7 @@
         <module>zkleaderdemo</module>
         <module>dubbospringbootdemo</module>
         <module>springbootrabbitmqdemo</module>
+        <module>sentineldemo</module>
     </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
