@@ -14,6 +14,11 @@ public class SentinelServiceImpl implements SentinelService{
 
     @Override
     public String sayHello(String name) {
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return "Hello "+ name + " : "+ LocalDateTime.now();
     }
 }
