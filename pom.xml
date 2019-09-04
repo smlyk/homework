@@ -27,6 +27,7 @@
         <module>springbootrabbitmqdemo</module>
         <module>sentineldemo</module>
         <module>sentinelspringbootdemo</module>
+        <module>kafkaspringbootdemo</module>
     </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
