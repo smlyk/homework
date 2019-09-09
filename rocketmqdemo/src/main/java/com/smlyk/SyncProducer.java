@@ -30,12 +30,18 @@ public class SyncProducer {
         //Launch the instance.
         producer.start();
 
-        for (int i = 0; i<10; i++){
+        for (int i = 0; i<20; i++){
             //创建一个消息实例，指定指定topic、tag、消息内容
             Message message = new Message("first_topic", "first_tag",("Hello RocketMQ "+ i).getBytes());
 
             //发送消息并且获取发送结果
-            SendResult sendResult = producer.send(message);
+            SendResult sendResult = producer.send(message, (list, message1, o) -> {
+
+                int key = Math.abs(o.hashCode());
+                int size = list.size();
+                int index = key%size;
+                return list.get(0);
+            }, "key_" + i);
             System.out.println(sendResult);
         }
 

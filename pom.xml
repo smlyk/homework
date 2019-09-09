@@ -29,6 +29,7 @@
         <module>sentinelspringbootdemo</module>
         <module>kafkaspringbootdemo</module>
         <module>rocketmqdemo</module>
+        <module>jucdemo</module>
     </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
