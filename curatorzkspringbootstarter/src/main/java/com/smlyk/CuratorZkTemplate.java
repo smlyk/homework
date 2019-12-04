@@ -23,8 +23,6 @@ public class CuratorZkTemplate {
 
     public CuratorFrameworkConfigProperties properties;
 
-    private String aaa;
-
     public CuratorZkTemplate(CuratorFrameworkConfigProperties properties) throws Exception {
         this.properties = properties;
         curatorFramework = CuratorFrameworkFactory.builder().
